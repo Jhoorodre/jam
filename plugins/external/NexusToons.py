@@ -157,7 +157,7 @@ def get_chapters(url):
     except Exception as e:
         output_json["error"] = f"Erro obtendo a lista de capítulos ({str(e)})"
     
-    print(json.dumps(output_json, indent=4))
+    print(json.dumps(output_json, indent=4, ensure_ascii=False))
 
 def get_pages(url):
     output_json = {
@@ -184,11 +184,11 @@ def get_pages(url):
     except Exception as e:
         output_json["error"] = f"Erro obtendo as páginas ({str(e)})"
         
-    print(json.dumps(output_json, indent=4))
+    print(json.dumps(output_json, indent=4, ensure_ascii=False))
 
 def main():
     if len(sys.argv) != 3:
-        print(json.dumps({"error": "Quantidade de argumentos inválida."}, indent=4))
+        print(json.dumps({"error": "Quantidade de argumentos inválida."}, indent=4, ensure_ascii=False))
         return
     
     url, mode = sys.argv[1], sys.argv[2].upper()
@@ -198,7 +198,7 @@ def main():
     elif mode == "PAGES":
         get_pages(url)
     else:
-        print(json.dumps({"error": "Segundo argumento desconhecido."}, indent=4))
+        print(json.dumps({"error": "Segundo argumento desconhecido."}, indent=4, ensure_ascii=False))
 
 if __name__ == "__main__":
     main()
