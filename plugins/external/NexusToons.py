@@ -127,6 +127,14 @@ def get_chapters(url):
         output_json["description"] = response.get("description", "")
         output_json["cover"] = response.get("coverImage", "")
         output_json["author"] = response.get("author", "")
+        output_json["artist"] = response.get("artist", "")
+        output_json["status"] = response.get("status", "")
+        output_json["year"] = str(response.get("releaseYear", ""))
+        output_json["rating"] = str(round(response.get("rating", 0), 2))
+        
+        categories = response.get("categories", [])
+        genres = [c.get("name") for c in categories if c.get("name")]
+        output_json["genres"] = ", ".join(genres)
         
         chapters = []
         chaptersList = response.get("chapters", [])
