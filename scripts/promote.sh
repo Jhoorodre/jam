@@ -14,35 +14,51 @@ CLASS_FILE=$2
 
 echo "✨ Promovendo '$NAME' de Planejamento para Ativas ✨"
 
-DOC_PATH="docs/Plugins.md"
+DOC_PATH="docs/ROADMAP.md"
 
 if [ -f "$DOC_PATH" ]; then
   python3 -c "
 import sys
+import re
 name = sys.argv[1]
 class_file = sys.argv[2]
 path = sys.argv[3]
+
 with open(path, 'r') as f:
     lines = f.readlines()
+
 out_lines = []
-target_line = ''
+target_domain = ''
+
+# Encontra e remove do Backlog
 for line in lines:
-    if '| ' + name + ' |' in line and '\`-\`' in line:
-        target_line = line
-    else:
-        out_lines.append(line)
-if target_line:
-    parts = target_line.split('|')
-    domain_part = parts[2]
-    new_line = f'| {name} |{domain_part}| [\`{class_file}\`](../plugins/external/{class_file}) |\n'
-    ativas_idx = -1
+    if '📝 **' + name + '**' in line:
+        match = re.search(r'\[(.*?)\]', line)
+        if match:
+            target_domain = match.group(1)
+        continue # Pula a linha do Backlog (remove)
+    out_lines.append(line)
+
+# Insere nas Concluídas
+if target_domain:
+    new_line = f'*   🟢 **{name}** (Script Externo - Python) - [{target_domain}](https://{target_domain}) - [\`{class_file}\`](../plugins/external/{class_file})\n'
+    
+    # Verifica se a subseção de Scripts Externos já existe
+    scripts_header = '### Scripts Externos (Python)'
+    header_idx = -1
     for i, l in enumerate(out_lines):
-        if '## 🟢 Ativas' in l:
-            ativas_idx = i
+        if scripts_header in l:
+            header_idx = i
             break
-    if ativas_idx != -1:
-        insert_idx = ativas_idx + 2
-        out_lines.insert(insert_idx, new_line)
+            
+    if header_idx != -1:
+        # Insere logo abaixo do cabeçalho
+        out_lines.insert(header_idx + 1, new_line)
+    else:
+        # Cria o cabeçalho no final do arquivo e insere
+        out_lines.append('\n' + scripts_header + '\n')
+        out_lines.append(new_line)
+
 with open(path, 'w') as f:
     f.writelines(out_lines)
 " "$NAME" "$CLASS_FILE" "$DOC_PATH"

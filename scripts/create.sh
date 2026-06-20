@@ -79,12 +79,12 @@ python3 ${CLASS_NAME}.py "\$@"
 EOF
 chmod +x "$LAUNCHER_PATH"
 
-DOC_PATH="docs/Plugins.md"
+DOC_PATH="docs/ROADMAP.md"
 if [ ! -s "$DOC_PATH" ]; then
-  # Se o arquivo não existir ou estiver vazio (0 bytes), a gente inicializa as seções
-  echo "## 🟢 Ativas" > "$DOC_PATH"
+  # Fallback caso o ROADMAP seja deletado
+  echo "## ✅ Concluídas / Ativas (Done)" > "$DOC_PATH"
   echo "" >> "$DOC_PATH"
-  echo "## 🟡 Em Planejamento" >> "$DOC_PATH"
+  echo "## 📋 Backlog / Em Planejamento (To Do)" >> "$DOC_PATH"
 fi
 
 python3 -c "
@@ -97,9 +97,9 @@ with open(path, 'r') as f:
 out_lines = []
 for i, line in enumerate(lines):
     out_lines.append(line)
-    if '## 🟡 Em Planejamento' in line:
+    if '## 📋 Backlog / Em Planejamento (To Do)' in line:
         out_lines.append('\n')
-        out_lines.append('| ' + name + ' | [' + domain + '](https://' + domain + ') | \`-\` |\n')
+        out_lines.append('*   📝 **' + name + '** (Script Externo - Python) - [' + domain + '](https://' + domain + ')\n')
 with open(path, 'w') as f:
     f.writelines(out_lines)
 " "$NAME" "$DOMAIN" "$DOC_PATH"
