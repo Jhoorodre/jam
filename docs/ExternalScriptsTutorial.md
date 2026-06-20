@@ -262,30 +262,51 @@ Agora que você criou seu script, é necessário configurar o JAM para usá-lo c
 
 Como os scripts nestes exemplos não envolvem a criação direta de um arquivo `.exe` nativo no Windows, teremos que criar um **Launcher** (Iniciador) manualmente para eles. Basta criar um arquivo de texto e escrever o comando completo.
 
-Para iniciar um script Java no Windows, crie um arquivo de texto e insira:
+Para iniciar um script Java no Windows, crie um arquivo de texto simples (TXT) e insira:
 
 ```bat
 @echo off
-java -jar seu_script.jar %*
+java -jar script.jar %*
 ```
-*(Renomeie a extensão do arquivo de `.txt` para `.bat` para torná-lo executável).*
+
+Onde, em vez de `script.jar`, você deve inserir o nome que deu ao seu script após a compilação. A parte com `@echo off` serve apenas para evitar que qualquer outra coisa seja impressa na tela além da saída JSON de retorno do programa (para que o JAM não se confunda ao interpretar o JSON correto), enquanto a parte com `%*` garante que os argumentos (URL e palavra-chave) que o JAM passa para o executável ao chamá-lo sejam repassados para o script que você programou.
+
+Agora, se você quiser usar esse inicializador no Windows, renomeie a extensão do arquivo de texto `.txt` para `.bat`, para que ele se torne executável e mude de ícone, como na imagem:
 
 ![Bat File](https://redsquirrel87.com/_media/md/hru8aien4m.png)
 
-Para iniciar no Linux ou Mac, edite o arquivo assim:
+Para iniciar no Linux ou Mac, edite o arquivo de texto assim:
 
 ```bash
 #!/bin/bash
-java -jar seu_script.jar "$@"
+java -jar script.jar "$@"
 ```
-*(Dê permissão de execução com o comando `chmod +x arquivo.sh`).*
 
-Se o seu script for em **Python**, o launcher no Windows deve ser assim:
+Onde, em vez de `script.jar`, você deve sempre inserir o nome que deu ao seu script.
+
+Agora você precisará renomear este arquivo de texto para o formato `.sh` e dar permissões de execução executando o seguinte comando em um terminal:
+
+```bash
+chmod +x script.sh
+```
+
+Obviamente, no terminal, você já deve ter navegado até a pasta onde o inicializador recém-criado está localizado, ou ele não encontrará o arquivo.
+
+Se o seu script for em **Python**, por exemplo, então no Windows em vez de:
 
 ```bat
 @echo off
-python seu_script.py %*
+java -jar script.jar %*
 ```
+
+Você deve escrever:
+
+```bat
+@echo off
+python script.py %*
+```
+
+Basicamente, o que muda é apenas o comando para iniciar o script. Isso acontece com qualquer linguagem que você esteja usando, mas acho que você já sabia disso.
 
 ### Inserindo no JAM
 
