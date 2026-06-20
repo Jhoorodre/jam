@@ -11,8 +11,11 @@ if [ -z "$NAME" ]; then echo "❌ Nome inválido"; exit 1; fi
 SLUG=$(echo "$NAME" | tr '[:upper:]' '[:lower:]' | tr -d ' ' | tr -d '-')
 CLASS_NAME=$(echo "$NAME" | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1' | tr -d ' ')
 
-read -p "🌐 Domínio sem https (ex: mangalivre.net): " DOMAIN
-if [ -z "$DOMAIN" ]; then echo "❌ Domínio inválido"; exit 1; fi
+read -p "🌐 Domínio sem https (ex: mangalivre.net): " RAW_DOMAIN
+if [ -z "$RAW_DOMAIN" ]; then echo "❌ Domínio inválido"; exit 1; fi
+
+# Limpa o domínio caso o usuário tenha colado com https:// e barras
+DOMAIN=$(echo "$RAW_DOMAIN" | sed -E 's|https?://||g' | sed 's|/$||g')
 
 echo "-----------------------------------------------"
 echo "🛠️ Criando arquivos no repositório..."
@@ -77,7 +80,8 @@ EOF
 chmod +x "$LAUNCHER_PATH"
 
 DOC_PATH="docs/Plugins.md"
-if [ ! -f "$DOC_PATH" ]; then
+if [ ! -s "$DOC_PATH" ]; then
+  # Se o arquivo não existir ou estiver vazio (0 bytes), a gente inicializa as seções
   echo "## 🟢 Ativas" > "$DOC_PATH"
   echo "" >> "$DOC_PATH"
   echo "## 🟡 Em Planejamento" >> "$DOC_PATH"
