@@ -8,7 +8,6 @@ Este documento organiza o estado de desenvolvimento e manutenção de todas as e
 ## 📋 Backlog / Em Planejamento (To Do)
 *Extensões na fila de desenvolvimento, passando por análise estrutural ou aguardando priorização na Sprint.*
 
-*   📝 **Nexus Toons** (Script Externo - Python)
 
 ---
 
