@@ -6,6 +6,8 @@ Este documento organiza o estado de desenvolvimento e manutenção de todas as e
 ---
 
 ## 📋 Backlog / Em Planejamento (To Do)
+
+*   📝 **Sakura Mangas** (Script Externo - Python) - [sakuramangas.org](https://sakuramangas.org)
 *Extensões na fila de desenvolvimento, passando por análise estrutural ou aguardando priorização na Sprint.*
 
 
