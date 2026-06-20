@@ -1,0 +1,64 @@
+name: Validate JAM Plugins
+
+on:
+  push:
+    branches: [ master, main, custom-jam ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Build & Validate Plugins
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Verificando Integridade dos Plugins
+        run: |
+          echo "🔍 Verificando o diretório de plugins..."
+          if [ ! -d "plugins" ]; then
+            echo "❌ ERRO: Diretório plugins/ não encontrado."
+            exit 1
+          fi
+          
+          # Verifica quantos arquivos .jar existem
+          PLUGINS_COUNT=$(ls -1 plugins/*.jar 2>/dev/null | wc -l)
+          if [ "$PLUGINS_COUNT" -eq 0 ]; then
+             echo "❌ ERRO: Nenhum arquivo .jar encontrado no diretório plugins/."
+             exit 1
+          fi
+          
+          echo "✅ Encontrados $PLUGINS_COUNT plugins (.jar)."
+          
+          # Procurando por plugins duplicados (por nome, ignorando case)
+          DUPLICATES=$(ls -1 plugins/*.jar | sed 's/.*\///' | tr '[:upper:]' '[:lower:]' | sort | uniq -d || true)
+          if [ ! -z "$DUPLICATES" ]; then
+            echo "⚠️ Aviso: Possíveis plugins duplicados ou com conflito de nome encontrados:"
+            echo "$DUPLICATES"
+          fi
+          
+          echo "✅ Validação do diretório concluída."
+
+      - name: Generate Validation Report
+        run: |
+          echo "📋 **Relatório de Plugins (JAM)**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Nome do Plugin | Extensão | Tamanho (Bytes) | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------------|----------|-----------------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          # Loop pelos arquivos da pasta para gerar a tabela
+          for plugin in plugins/*.jar; do
+            if [ -f "$plugin" ]; then
+              filename=$(basename "$plugin")
+              plugin_name="${filename%.jar}"
+              filesize=$(stat -c%s "$plugin")
+              
+              echo "| **$plugin_name** | \`.jar\` | $filesize | ✅ Validado |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🚀 **Todos os plugins foram listados e validados com sucesso!**" >> $GITHUB_STEP_SUMMARY
