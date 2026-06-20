@@ -124,6 +124,9 @@ def get_chapters(url):
         response = requestAPI(apiUrl)
         
         output_json["manga"] = response.get("title", "ERROR")
+        output_json["description"] = response.get("description", "")
+        output_json["cover"] = response.get("coverImage", "")
+        output_json["author"] = response.get("author", "")
         
         chapters = []
         chaptersList = response.get("chapters", [])
@@ -142,14 +145,17 @@ def get_chapters(url):
             # Repassamos a URL da API direto para o get_pages ler futuramente
             ch_url = f"https://nx-toons.xyz/api/read/{chapter_id}"
             
+            scan_groups = ch.get("scanGroups", [])
+            group_name = scan_groups[0].get("name", "") if scan_groups else ""
+            
             chapter_info = {
                 "title": title.strip(),
                 "url": ch_url,
                 "date": ch.get("createdAt", "").strip(),
                 "language": "Português",
-                "group": "",
+                "group": group_name,
                 "uploader": "",
-                "views": ""
+                "views": str(ch.get("views", ""))
             }
             chapters.append(chapter_info)
             
