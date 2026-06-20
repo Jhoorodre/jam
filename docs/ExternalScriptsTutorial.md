@@ -35,10 +35,42 @@ Para ver o código-fonte, recomendo usar o navegador **Google Chrome**, pois ele
 
 1. Abra no navegador o site que você deseja suportar e procure por um mangá (exemplo: `https://weebcentral.com/series/01J76XYDRMXQ5NEQNT4R3B0Z2N/...`).
 2. Selecione o título do mangá, clique com o botão direito e escolha **Inspecionar**.
+
+![Developer Console](https://redsquirrel87.com/_media/md/fl4waetwkl.png)
+
 3. O painel de *Desenvolvedor* se abrirá mostrando a tag HTML correspondente (por exemplo, dentro de um `<h1>`).
-4. Da mesma forma, para a lista de capítulos, clique com o botão direito em um deles e selecione **Inspecionar**. Suba o cursor no código HTML até que a lista inteira de capítulos seja selecionada (ex: uma `div` com id `chapters-list`).
-5. Ao expandir o bloco dessa lista, você notará os padrões repetitivos para cada capítulo. Geralmente, você encontrará o link (`href`) dentro de uma tag `<a>`, o título dentro de um `<span>` e a data em um `<time>`.
-6. Para capturar as páginas, entre em um capítulo e inspecione uma imagem. Você verá as tags `<img>` e precisará capturar seus respectivos atributos `src`.
+
+![H1 Tag](https://redsquirrel87.com/_media/md/5d3wizraqh.png)
+
+4. Da mesma forma, para a lista de capítulos, clique com o botão direito em um deles e selecione **Inspecionar**. 
+
+![Inspect Chapter](https://redsquirrel87.com/_media/md/zfd3ybidem.png)
+
+![Highlighted Chapter](https://redsquirrel87.com/_media/md/uuw8giuijp.png)
+
+Suba o cursor no código HTML até que a lista inteira de capítulos seja selecionada (ex: uma `div` com id `chapters-list`).
+
+![Chapters List](https://redsquirrel87.com/_media/md/twixlnn956.png)
+
+5. Ao expandir o bloco dessa lista, você notará os padrões repetitivos para cada capítulo. 
+
+![Chapters Blocks](https://redsquirrel87.com/_media/md/z1yocke3is.png)
+
+![Expanded Chapter](https://redsquirrel87.com/_media/md/ijjx4covrm.png)
+
+Geralmente, você encontrará o link (`href`) dentro de uma tag `<a>`, o título dentro de um `<span>` e a data em um `<time>`.
+
+![URL href](https://redsquirrel87.com/_media/md/eizobwiudv.png)
+![Chapter Title](https://redsquirrel87.com/_media/md/cgmjbusbfw.png)
+![Chapter Date](https://redsquirrel87.com/_media/md/ae9jvzfuel.png)
+
+6. Para capturar as páginas, entre em um capítulo e inspecione uma imagem. 
+
+![Inspect Page Image](https://redsquirrel87.com/_media/md/hxnyfaee7i.png)
+
+Você verá as tags `<img>` e precisará capturar seus respectivos atributos `src`.
+
+![Image SRC](https://redsquirrel87.com/_media/md/kvn3cx5apr.png)
 
 **Nota Importante:** Este é apenas um exemplo genérico. Cada site possui uma estrutura HTML única. Além disso, muitos sites modernos ofuscam o código ou injetam conteúdo via Javascript. Nesses casos, o código HTML puro não conterá as informações, exigindo técnicas mais avançadas como interpretadores Javascript externos (ex: Selenium).
 
@@ -238,6 +270,8 @@ java -jar seu_script.jar %*
 ```
 *(Renomeie a extensão do arquivo de `.txt` para `.bat` para torná-lo executável).*
 
+![Bat File](https://redsquirrel87.com/_media/md/hru8aien4m.png)
+
 Para iniciar no Linux ou Mac, edite o arquivo assim:
 
 ```bash
@@ -255,11 +289,38 @@ python seu_script.py %*
 
 ### Inserindo no JAM
 
+Tendo criado o inicializador, para garantir que o script funcione, podemos abri-lo pelo terminal passando o argumento `CHAPTERS` para ver o array JSON impresso na tela.
+
+![Terminal Test](https://redsquirrel87.com/_media/md/sa1ud3tvet.png)
+
+E com o comando `PAGES` para as imagens:
+
+![Terminal Pages](https://redsquirrel87.com/_media/md/n7x6rhuwbx.png)
+
+Para inseri-lo de vez no JAM:
+
 1. Certifique-se de que o inicializador gerado (`.bat` ou `.sh`) esteja na mesma pasta do arquivo principal.
 2. Inicie o JAM, clique no menu **Edit** e escolha **External Scripts**.
+
+![Edit Menu](https://redsquirrel87.com/_media/md/3tctuxoxgb.png)
+
 3. Na tela exibida, clique no botão **Add**.
 4. Insira o domínio do site (ex: `weebcentral.com`).
+
+![Domain Input](https://redsquirrel87.com/_media/md/tjbswrxwe2.png)
+
 5. Selecione o arquivo inicializador (`.bat` ou `.sh`) que você criou.
 6. Clique em **OK** para salvar.
 
-Pronto! Ao tentar adicionar um link no programa, certifique-se de marcar a caixa **External Script** como *Generic Framework*, e o JAM chamará automaticamente o seu código. Se a página mudar no futuro, basta atualizar o seu script sem precisar esperar uma atualização oficial do JAM.
+![Config Saved](https://redsquirrel87.com/_media/md/q8w3w6iihg.png)
+
+Pronto! Ao tentar adicionar um link no programa, certifique-se de marcar a caixa **External Script** como *Generic Framework*, e o JAM chamará automaticamente o seu código. 
+
+![Add Series](https://redsquirrel87.com/_media/md/xg1jdnepb1.png)
+
+O JAM fará a leitura através do script perfeitamente.
+
+![Chapter List Loaded](https://redsquirrel87.com/_media/md/39wsaz1pep.png)
+![Downloading](https://redsquirrel87.com/_media/md/zv5rgo3klv.png)
+
+Se a página mudar no futuro, basta atualizar o seu script sem precisar esperar uma atualização oficial do JAM.
